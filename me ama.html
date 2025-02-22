@@ -9,9 +9,11 @@
             text-align: center;
             background-color: pink;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         .container {
             margin-top: 50px;
+            position: relative;
         }
         .gif {
             width: 200px;
@@ -32,48 +34,84 @@
             color: white;
             position: absolute;
         }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .clicked {
+            animation: bounce 0.3s ease-in-out;
+        }
+        .heart {
+            position: fixed;
+            font-size: 30px;
+            color: red;
+            animation: fall 2s linear infinite;
+        }
+        @keyframes fall {
+            from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
     <div class="container" id="valentine">
         <img src="https://media1.tenor.com/m/nyL1-X_lqgQAAAAC/te-amo-bjo-meu-amor.gif" width="150">
-        <h2>voce me ama?</h2>
+        <h2>Você me ama?</h2>
         <p id="messageText">Tem certeza?</p>
         <div class="buttons">
             <button id="yesButton" onclick="acceptLove()">SIM</button>
             <button id="noButton" onclick="rejectLove()">NÃO</button>
         </div>
     </div>
+
     <script>
         let noCount = 0;
-        const messages = ["é serio?", "Pense de novo!", "Tem certeza absoluta?", "Você não pode dizer não!", "Ok, tudo bem..."];
+        const messages = ["por favor?", "Pense de novo!", "Me dê uma chance!?", "Você não pode dizer não!", "agora nao tem saida..."];
         
         function rejectLove() {
             let noButton = document.getElementById("noButton");
-            let yesButton = document.getElementById("yesButton");
             let messageText = document.getElementById("messageText");
-            
+
             if (noCount < messages.length) {
                 messageText.innerText = messages[noCount];
                 noCount++;
-                
-                let randomX = Math.floor(Math.random(10) * (window.innerWidth - 100));
-                let randomY = Math.floor(Math.random() * (window.innerHeight - 100));
-                
+
+                let maxX = window.innerWidth - noButton.offsetWidth;
+                let maxY = window.innerHeight - noButton.offsetHeight;
+
+                let randomX = Math.min(Math.floor(Math.random() * maxX), maxX);
+                let randomY = Math.min(Math.floor(Math.random() * maxY), maxY);
+
                 noButton.style.left = `${randomX}px`;
                 noButton.style.top = `${randomY}px`;
             }
-            
             if (noCount === messages.length) {
                 noButton.style.display = "none";
             }
         }
-        
+
         function acceptLove() {
             document.getElementById("valentine").innerHTML = `
                 <img src="https://i.pinimg.com/280x280_RS/85/c5/be/85c5bee586ccc40cfae2a6d3f9a5a632.jpg" class="gif">
-                <div class="question"> EU TAMBEM TE AMO TANTO MINHA VIDA ❤️🥰</div>
+                <div class="question"> EU TAMBÉM TE AMO TANTO MINHA VIDA ❤️🥰</div>
             `;
+
+            createHearts();
+        }
+
+        function createHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * window.innerWidth + "px";
+                heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }, 200);
         }
     </script>
 </body>
