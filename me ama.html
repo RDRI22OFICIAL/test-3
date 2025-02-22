@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido de Valentine</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .gif {
+            width: 200px;
+        }
+        .buttons button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        #yesButton {
+            background-color: green;
+            color: white;
+        }
+        #noButton {
+            background-color: red;
+            color: white;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="valentine">
+        <img src="https://media1.tenor.com/m/nyL1-X_lqgQAAAAC/te-amo-bjo-meu-amor.gif" width="150">
+        <h2>voce me ama?</h2>
+        <p id="messageText">Tem certeza?</p>
+        <div class="buttons">
+            <button id="yesButton" onclick="acceptLove()">SIM</button>
+            <button id="noButton" onclick="rejectLove()">NÃO</button>
+        </div>
+    </div>
+    <script>
+        let noCount = 0;
+        const messages = ["Tem certeza mesmo?", "Pense de novo!", "Tem certeza absoluta?", "Você não pode dizer não!", "Ok, tudo bem..."];
+        
+        function rejectLove() {
+            let noButton = document.getElementById("noButton");
+            let yesButton = document.getElementById("yesButton");
+            let messageText = document.getElementById("messageText");
+            
+            if (noCount < messages.length) {
+                messageText.innerText = messages[noCount];
+                noCount++;
+                
+                let randomX = Math.floor(Math.random(10) * (window.innerWidth - 100));
+                let randomY = Math.floor(Math.random() * (window.innerHeight - 100));
+                
+                noButton.style.left = `${randomX}px`;
+                noButton.style.top = `${randomY}px`;
+            }
+            
+            if (noCount === messages.length) {
+                noButton.style.display = "none";
+            }
+        }
+        
+        function acceptLove() {
+            document.getElementById("valentine").innerHTML = `
+                <img src="https://i.pinimg.com/280x280_RS/85/c5/be/85c5bee586ccc40cfae2a6d3f9a5a632.jpg" class="gif">
+                <div class="question"> EU TAMBEM TE AMO TANTO MINHA VIDA ❤️🥰</div>
+            `;
+        }
+    </script>
+</body>
+</html>
